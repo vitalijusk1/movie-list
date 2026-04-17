@@ -4,14 +4,20 @@ import { paths } from "./paths";
 import LoginPage from "../pages/AuthPages/LoginPage/LoginPage";
 import RegisterPage from "../pages/AuthPages/RegisterPage/RegisterPage";
 import MovieListPage from "../pages/MovieListPage/MovieListPage";
+import Layout from "../layouts/Layout";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="*" element={<Navigate to={paths.movieList()} />} />
-      <Route path={paths.login()} element={<LoginPage />} />
-      <Route path={paths.register()} element={<RegisterPage />} />
-      <Route path={paths.movieList()} element={<MovieListPage />} />
+      <Route element={<Layout />}>
+        <Route path={paths.login()} element={<LoginPage />} />
+        <Route path={paths.register()} element={<RegisterPage />} />
+        <Route element={<ProtectedLayout />}>
+          <Route path={paths.movieList()} element={<MovieListPage />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<Navigate to={paths.login()} />} />
       {/* Basic layout for all screens - Header/Content/BottomNav */}
       {/* <Route element={<Layout />}>
         <Route element={<ProtectedLayout />}> */}
