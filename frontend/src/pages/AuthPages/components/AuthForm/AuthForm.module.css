@@ -59,3 +59,18 @@
 .input::placeholder {
   color: var(--text-muted);
 }
+
+.error {
+  font-size: var(--text-xs);
+  color: #ef4444;
+  margin-top: var(--space-xs);
+}
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  font-family: var(--font-sans);
+}
