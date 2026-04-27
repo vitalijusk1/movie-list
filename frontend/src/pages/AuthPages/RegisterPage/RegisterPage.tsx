@@ -8,8 +8,11 @@ import { registerFields } from "./registerFormData";
 import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { registerSchema, type RegisterFormValues } from "./registerSchema";
+import { useAppDispatch } from "../../../store/hooks";
+import { registerAsync } from "../../../store/slices/AuthSlice/authThunk";
 
 const RegisterPage = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -25,7 +28,7 @@ const RegisterPage = () => {
   });
 
   const onSubmit = (data: RegisterFormValues) => {
-    console.log(data);
+    dispatch(registerAsync(data));
   };
 
   return (

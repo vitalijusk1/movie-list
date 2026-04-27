@@ -8,8 +8,11 @@ import { loginFields } from "./loginFormData";
 import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
+import { useAppDispatch } from "../../../store/hooks";
+import { loginAsync } from "../../../store/slices/AuthSlice/authThunk";
 
 const LoginPage = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -20,7 +23,7 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
+    dispatch(loginAsync(data));
   };
 
   return (
