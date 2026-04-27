@@ -5,22 +5,24 @@ import styles from "./LoginPage.module.css";
 import AuthForm from "../components/AuthForm/AuthForm";
 import { loginFields } from "./formData";
 import Button from "../../../components/Button/Button";
+import { paths } from "../../../router/paths";
+import { loginSchema, type LoginFormValues } from "./loginSchema";
+import { useAppDispatch } from "../../../store/hooks";
+import { loginAsync } from "../../../store/slices/AuthSlice/authThunk";
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    repeatPassword: "",
+  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
+  const onSubmit = (data: LoginFormValues) => {
+    dispatch(loginAsync(data));
   };
 
   return (
