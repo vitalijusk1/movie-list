@@ -10,7 +10,7 @@ export const registerAsync = createAsyncThunk(
       const response = await axiosInstance.post(apiRoutes.register(), payload);
       return response.data;
     } catch (error) {
-      throw error;
+      console.error("Registration failed:", error);
     }
   },
 );
@@ -22,7 +22,7 @@ export const loginAsync = createAsyncThunk(
       const response = await axiosInstance.post(apiRoutes.login(), payload);
       return response.data;
     } catch (error) {
-      throw error;
+      console.error("Login failed:", error);
     }
   },
 );

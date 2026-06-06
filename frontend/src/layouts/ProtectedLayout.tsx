@@ -4,11 +4,10 @@ import Header from "../components/Header/Header";
 const ProtectedLayout = () => {
   // if no token redirect
   return (
-    <div>
+    <>
       <Header />
       <Outlet />
-      {/* <Footer /> */}
-    </div>
+    </>
   );
 };
 

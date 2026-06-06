@@ -6,6 +6,7 @@ import RegisterPage from "../pages/AuthPages/RegisterPage/RegisterPage";
 import MovieListPage from "../pages/MovieListPage/MovieListPage";
 import Layout from "../layouts/Layout";
 import ProtectedLayout from "../layouts/ProtectedLayout";
+import RegisterSuccessPage from "../pages/AuthPages/RegisterSuccessPage/RegisterSuccessPage";
 
 const Router = () => {
   return (
@@ -13,6 +14,10 @@ const Router = () => {
       <Route element={<Layout />}>
         <Route path={paths.login()} element={<LoginPage />} />
         <Route path={paths.register()} element={<RegisterPage />} />
+        <Route
+          path={paths.registerSuccess()}
+          element={<RegisterSuccessPage />}
+        />
         <Route element={<ProtectedLayout />}>
           <Route path={paths.movieList()} element={<MovieListPage />} />
         </Route>

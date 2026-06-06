@@ -10,6 +10,7 @@ import { paths } from "../../../router/paths";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useAppDispatch } from "../../../store/hooks";
 import { loginAsync } from "../../../store/slices/AuthSlice/authThunk";
+import utilsStyles from "../../../styles/Utils.module.css";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,9 @@ const LoginPage = () => {
   };
 
   return (
-    <section className={authStyles.authPage}>
+    <section
+      className={`${utilsStyles.page} ${utilsStyles.flexCenter} ${utilsStyles.container}`}
+    >
       <AuthForm title="Login" handleSubmit={handleSubmit(onSubmit)}>
         <>
           {loginFields.map(({ name, label, type }) => (
