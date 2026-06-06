@@ -4,12 +4,15 @@
   border-radius: var(--radius-md);
   font-size: var(--text-base);
   font-weight: var(--font-medium);
-  font-family: var(--font-sans);
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
     box-shadow var(--transition-fast);
   letter-spacing: 0.025em;
+}
+
+.link {
+  text-decoration: none;
 }
 
 .default {
@@ -19,7 +22,6 @@
 
 .default:hover {
   background-color: var(--accent-primary-hover);
-  box-shadow: var(--shadow-glow);
 }
 
 .default:active {

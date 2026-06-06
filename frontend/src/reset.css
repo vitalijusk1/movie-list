@@ -106,8 +106,16 @@ section {
   display: block;
 }
 body {
+  font-family: var(--font-sans);
   line-height: 1;
   background-color: var(--bg-primary);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 ol,
 ul {

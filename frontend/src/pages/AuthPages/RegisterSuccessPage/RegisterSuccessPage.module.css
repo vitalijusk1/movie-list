@@ -1,0 +1,8 @@
+.messageText {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+}

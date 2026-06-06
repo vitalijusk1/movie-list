@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authStyles from "../styles/Auth.module.css";
 import authFormStyles from "../components/AuthForm/AuthForm.module.css";
 import AuthForm from "../components/AuthForm/AuthForm";
@@ -10,9 +10,11 @@ import { paths } from "../../../router/paths";
 import { registerSchema, type RegisterFormValues } from "./registerSchema";
 import { useAppDispatch } from "../../../store/hooks";
 import { registerAsync } from "../../../store/slices/AuthSlice/authThunk";
+import utilsStyles from "../../../styles/Utils.module.css";
 
 const RegisterPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -27,12 +29,19 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = (data: RegisterFormValues) => {
-    dispatch(registerAsync(data));
+  const onSubmit = async (data: RegisterFormValues) => {
+    try {
+      await dispatch(registerAsync(data)).unwrap();
+      navigate(paths.registerSuccess());
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   return (
-    <section className={authStyles.authPage}>
+    <section
+      className={`${utilsStyles.page} ${utilsStyles.flexCenter} ${utilsStyles.container}`}
+    >
       <AuthForm title="Register" handleSubmit={handleSubmit(onSubmit)}>
         <>
           {registerFields.map(({ name, label, type }) => (

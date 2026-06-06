@@ -6,7 +6,6 @@
   max-width: 400px;
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-lg);
-  font-family: var(--font-sans);
 }
 
 .title {
@@ -44,7 +43,6 @@
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   font-size: var(--text-base);
-  font-family: var(--font-sans);
   transition:
     border-color var(--transition-fast),
     box-shadow var(--transition-fast);
@@ -64,13 +62,4 @@
   font-size: var(--text-xs);
   color: #ef4444;
   margin-top: var(--space-xs);
-}
-
-.loginPage {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-  font-family: var(--font-sans);
 }

@@ -1,12 +1,14 @@
 import type { CSSProperties, FC } from "react";
 import styles from "./Button.module.css";
+import { Link } from "react-router-dom";
 
 interface ButtonProps {
   children: React.ReactNode;
   variant?: "default" | "secondary";
   style?: CSSProperties;
-  className?: string;
+
   type?: "button" | "submit" | "reset";
+  to?: string;
   onClick?: () => void;
 }
 
@@ -14,22 +16,34 @@ const Button: FC<ButtonProps> = ({
   children,
   variant = "default",
   style,
-  className = "",
   type = "button",
   onClick,
+  to,
 }) => {
   const variantClass =
     variant === "secondary" ? styles.secondary : styles.default;
 
   return (
-    <button
-      type={type}
-      className={`${styles.button} ${variantClass} ${className}`}
-      style={style}
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <>
+      {to ? (
+        <Link
+          to={to}
+          className={`${styles.button} ${variantClass} ${styles.link}`}
+          style={style}
+        >
+          {children}
+        </Link>
+      ) : (
+        <button
+          type={type}
+          className={`${styles.button} ${variantClass}`}
+          style={style}
+          onClick={onClick}
+        >
+          {children}
+        </button>
+      )}
+    </>
   );
 };
 
