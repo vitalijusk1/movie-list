@@ -1,17 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loginAsync } from "./authThunk";
 
 interface AuthState {
-  isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(loginAsync.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(loginAsync.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(loginAsync.rejected, (state) => {
+      state.isLoading = false;
+    });
+  },
 });
 
 export default authSlice.reducer;
