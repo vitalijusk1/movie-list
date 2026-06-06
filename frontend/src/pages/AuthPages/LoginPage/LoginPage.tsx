@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authFormStyles from "../components/AuthForm/AuthForm.module.css";
 import AuthForm from "../components/AuthForm/AuthForm";
 import authStyles from "../styles/Auth.module.css";
@@ -14,6 +14,7 @@ import utilsStyles from "../../../styles/Utils.module.css";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -23,8 +24,13 @@ const LoginPage = () => {
     defaultValues: { email: "", password: "" },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    dispatch(loginAsync(data));
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      await dispatch(loginAsync(data)).unwrap();
+      navigate(paths.movieList());
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (

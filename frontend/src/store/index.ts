@@ -12,6 +12,7 @@ import {
 import storage from "redux-persist/es/storage";
 import authReducer from "./slices/AuthSlice/authSlice";
 import moviesReducer from "./slices/MoviesSlice/moviesSlice";
+import userReducer from "./slices/UserSlice/userSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   movies: moviesReducer,
+  user: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
