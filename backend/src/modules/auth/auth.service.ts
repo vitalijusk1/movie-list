@@ -80,4 +80,8 @@ export class AuthService {
   //     throw new UnauthorizedException('Invalid token');
   //   }
   // }
+
+  clearAuthCookie(res: any) {
+    res.clearCookie('access_token');
+  }
 }
