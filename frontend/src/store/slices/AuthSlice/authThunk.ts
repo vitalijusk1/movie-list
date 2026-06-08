@@ -2,9 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { LoginReq, RegisterReq } from "./types";
 import axiosInstance from "../../../api/axiosInstance";
 import { apiRoutes } from "../../../api/api";
-import { setUser } from "../UserSlice/userSlice";
-
-
+import { clearUser, setUser } from "../UserSlice/userSlice";
 
 
 export const registerAsync = createAsyncThunk(
@@ -28,6 +26,19 @@ export const loginAsync = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Login failed:", error);
+    }
+  },
+);
+
+
+export const logoutAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { dispatch }) => {
+    try {
+      await axiosInstance.post(apiRoutes.logout());
+      dispatch(clearUser());
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
   },
 );
