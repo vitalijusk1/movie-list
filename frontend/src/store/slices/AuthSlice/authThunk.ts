@@ -3,10 +3,10 @@ import type { LoginReq, RegisterReq } from "./types";
 import axiosInstance from "../../../api/axiosInstance";
 import { apiRoutes } from "../../../api/api";
 import { clearUser, setUser } from "../UserSlice/userSlice";
+import { AUTH_ACTIONS } from "./authActionTypes";
 
-
-export const registerAsync = createAsyncThunk(
-  "auth/register",
+  export const registerAsync = createAsyncThunk(
+    AUTH_ACTIONS.REGISTER,
   async (payload: RegisterReq) => {
     try {
       const response = await axiosInstance.post(apiRoutes.register(), payload);
@@ -18,7 +18,7 @@ export const registerAsync = createAsyncThunk(
 );
 
 export const loginAsync = createAsyncThunk(
-  "auth/login",
+  AUTH_ACTIONS.LOGIN,
   async (payload: LoginReq, { dispatch }) => {
     try {
       const response = await axiosInstance.post(apiRoutes.login(), payload);
@@ -32,7 +32,7 @@ export const loginAsync = createAsyncThunk(
 
 
 export const logoutAsync = createAsyncThunk(
-  "auth/logout",
+  AUTH_ACTIONS.LOGOUT,
   async (_, { dispatch }) => {
     try {
       await axiosInstance.post(apiRoutes.logout());

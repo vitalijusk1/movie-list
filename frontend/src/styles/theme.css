@@ -118,4 +118,6 @@
   --z-modal: 500;
   --z-popover: 600;
   --z-tooltip: 700;
+
+  --header-height: 64px;
 }

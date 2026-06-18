@@ -1,0 +1,16 @@
+.MovieCardPoster {
+    width: 100%;
+    aspect-ratio: 2/3;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+}
+
+.MovieTitle {
+    margin: 8px 0 4px;
+    color: var(--text-primary);
+}
+
+.MovieRating {
+    color: var(--text-secondary);
+}
