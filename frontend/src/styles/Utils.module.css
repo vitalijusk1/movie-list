@@ -7,6 +7,10 @@
   min-height: 100vh;
 }
 
+.pageWithHeader {
+  min-height: calc(100vh - var(--header-height));
+}
+
 .flexCenter {
   display: flex;
   align-items: center;

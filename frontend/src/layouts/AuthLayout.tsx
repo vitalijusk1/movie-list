@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header/Header";
 
-const Layout = () => {
+
+const AuthLayout = () => {
   return (
     <main>
       <Outlet />
@@ -9,4 +9,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default AuthLayout;
