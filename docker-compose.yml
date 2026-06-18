@@ -23,6 +23,9 @@ services:
     container_name: movie-list-backend
     env_file:
       - ./backend/.env
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
     ports:
       - "3000:3000"
     volumes:
