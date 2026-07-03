@@ -1,0 +1,6 @@
+.FilterPanelWrapper {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin: var(--space-md) 0;
+}

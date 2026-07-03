@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../store/hooks";
 import { getMoviesAsync } from "../../store/slices/MoviesSlice/moviesThunk";
 import { useEffect } from "react";
 import { useAppSelector } from "../../store/hooks";
+import FilterPanel from "./components/FilterPanel/FilterPanel";
 
 const MovieListPage = () => {
   const dispatch = useAppDispatch();
@@ -13,10 +14,11 @@ const MovieListPage = () => {
     dispatch(getMoviesAsync());
   }, []);
 
-  
-
   return (
-    <section className={`${utilsStyles.pageWithHeader} ${utilsStyles.container}`}>
+    <section
+      className={`${utilsStyles.pageWithHeader} ${utilsStyles.container}`}
+    >
+      <FilterPanel />
       <MoviesGrid movies={movies} />
     </section>
   );
