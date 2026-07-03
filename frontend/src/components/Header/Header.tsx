@@ -13,7 +13,7 @@ const Header = () => {
     dispatch(logoutAsync());
     navigate(paths.login());
   };
-  
+
   return (
     <header className={styles.header}>
       <a href={paths.movieList()} className={styles.logo}>

@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(logoutAsync.pending, (state) => {
-    state.isLoading = true;
+      state.isLoading = true;
     });
     builder.addCase(logoutAsync.fulfilled, (state) => {
       state.isLoading = false;

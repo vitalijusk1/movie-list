@@ -8,7 +8,7 @@ export const getMoviesAsync = createAsyncThunk(
   MOVIE_ACTIONS.GET_ALL,
   async () => {
     try {
-       const response = await axiosInstance.get(apiRoutes.movies());
+      const response = await axiosInstance.get(apiRoutes.movies());
       return response.data;
     } catch (error) {
       console.error("Registration failed:", error);

@@ -17,7 +17,7 @@
 
 .default {
   background-color: var(--accent-primary);
-  color: white;
+  color: var(--text-primary);
 }
 
 .default:hover {

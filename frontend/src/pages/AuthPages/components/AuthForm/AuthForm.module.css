@@ -51,7 +51,8 @@
 .input:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--accent-primary) 15%, transparent);
 }
 
 .input::placeholder {
@@ -60,6 +61,6 @@
 
 .error {
   font-size: var(--text-xs);
-  color: #ef4444;
+  color: var(--color-error);
   margin-top: var(--space-xs);
 }

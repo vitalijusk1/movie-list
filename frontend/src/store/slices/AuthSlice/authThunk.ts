@@ -5,8 +5,8 @@ import { apiRoutes } from "../../../api/api";
 import { clearUser, setUser } from "../UserSlice/userSlice";
 import { AUTH_ACTIONS } from "./authActionTypes";
 
-  export const registerAsync = createAsyncThunk(
-    AUTH_ACTIONS.REGISTER,
+export const registerAsync = createAsyncThunk(
+  AUTH_ACTIONS.REGISTER,
   async (payload: RegisterReq) => {
     try {
       const response = await axiosInstance.post(apiRoutes.register(), payload);
@@ -29,7 +29,6 @@ export const loginAsync = createAsyncThunk(
     }
   },
 );
-
 
 export const logoutAsync = createAsyncThunk(
   AUTH_ACTIONS.LOGOUT,
