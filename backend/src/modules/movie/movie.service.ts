@@ -4,6 +4,7 @@ import { Repository, In } from 'typeorm';
 import { Movie } from './movie.entity';
 import { Genre } from '../genre/genre.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { GetMoviesQueryDto } from './dto/get-movies-query.dto';
 
 @Injectable()
 export class MovieService {
@@ -14,8 +15,18 @@ export class MovieService {
     private readonly genreRepository: Repository<Genre>,
   ) {}
 
-  async findAll(): Promise<Movie[]> {
+  async findAll(query: GetMoviesQueryDto): Promise<Movie[]> {
+    const { genreIds } = query;
+
+    const where = {
+      ...(genreIds && { genres: { id: In(genreIds.split(',').map(Number)) } }),
+      // example of other query params being used
+      // ...(year && { year: Number(year) }),
+      // ...(rating && { rating: MoreThanOrEqual(Number(rating)) }),
+    };
+
     return this.movieRepository.find({
+      where,
       relations: ['genres', 'relatedMovies'],
     });
   }

@@ -3,4 +3,5 @@ export const apiRoutes = {
   login: () => "/auth/login",
   logout: () => "/auth/logout",
   movies: () => "/movies",
+  genres: () => "/genres",
 };
