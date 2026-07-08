@@ -6,12 +6,14 @@ import {
   Delete,
   Param,
   Body,
+  Query,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { GetMoviesQueryDto } from './dto/get-movies-query.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('movies')
@@ -19,8 +21,8 @@ export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
   @Get()
-  findAll() {
-    return this.movieService.findAll();
+  findAll(@Query() query: GetMoviesQueryDto) {
+    return this.movieService.findAll(query);
   }
 
   @Get(':id')
@@ -34,7 +36,10 @@ export class MovieController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: Partial<CreateMovieDto>) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: Partial<CreateMovieDto>,
+  ) {
     return this.movieService.update(id, dto);
   }
 

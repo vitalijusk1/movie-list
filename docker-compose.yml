@@ -31,7 +31,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: npm run start:dev
+    command: sh -c "npm run seed && npm run start:dev"
     depends_on:
       postgres:
         condition: service_healthy

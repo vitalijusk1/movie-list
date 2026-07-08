@@ -1,18 +1,28 @@
 import MoviesGrid from "./components/MoviesGrid/MoviesGrid";
 import utilsStyles from "../../styles/Utils.module.css";
 import { useAppDispatch } from "../../store/hooks";
-import { getMoviesAsync } from "../../store/slices/MoviesSlice/moviesThunk";
+import {
+  getMoviesAsync,
+  getGenresAsync,
+} from "../../store/slices/MoviesSlice/moviesThunk";
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import FilterPanel from "./components/FilterPanel/FilterPanel";
 
 const MovieListPage = () => {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state) => state.movies.movies);
+  const [searchParams] = useSearchParams();
+  const genreIds = searchParams.get("genreIds")?.split(",").map(Number) ?? [];
 
   useEffect(() => {
-    dispatch(getMoviesAsync());
+    dispatch(getGenresAsync());
   }, []);
+
+  useEffect(() => {
+    dispatch(getMoviesAsync(genreIds));
+  }, [searchParams]);
 
   return (
     <section
