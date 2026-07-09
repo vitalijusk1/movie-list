@@ -15,13 +15,14 @@ const MovieListPage = () => {
   const movies = useAppSelector((state) => state.movies.movies);
   const [searchParams] = useSearchParams();
   const genreIds = searchParams.get("genreIds")?.split(",").map(Number) ?? [];
+  const search = searchParams.get("search") ?? "";
 
   useEffect(() => {
     dispatch(getGenresAsync());
   }, []);
 
   useEffect(() => {
-    dispatch(getMoviesAsync(genreIds));
+    dispatch(getMoviesAsync({ genreIds, search }));
   }, [searchParams]);
 
   return (
