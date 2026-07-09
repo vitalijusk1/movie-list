@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, ILike } from 'typeorm';
 import { Movie } from './movie.entity';
 import { Genre } from '../genre/genre.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -16,19 +16,22 @@ export class MovieService {
   ) {}
 
   async findAll(query: GetMoviesQueryDto): Promise<Movie[]> {
-    const { genreIds } = query;
+    const { genreIds, search } = query;
 
     const where = {
       ...(genreIds && { genres: { id: In(genreIds.split(',').map(Number)) } }),
+      ...(search && { title: ILike(`%${search}%`) }),
       // example of other query params being used
       // ...(year && { year: Number(year) }),
       // ...(rating && { rating: MoreThanOrEqual(Number(rating)) }),
     };
 
-    return this.movieRepository.find({
+    const result = await this.movieRepository.find({
       where,
       relations: ['genres', 'relatedMovies'],
     });
+
+    return result;
   }
 
   async findOne(id: number): Promise<Movie> {
