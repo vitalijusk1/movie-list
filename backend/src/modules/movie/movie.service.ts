@@ -1,6 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, ILike } from 'typeorm';
+import {
+  Between,
+  FindOperator,
+  ILike,
+  In,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { Movie } from './movie.entity';
 import { Genre } from '../genre/genre.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -16,14 +28,36 @@ export class MovieService {
   ) {}
 
   async findAll(query: GetMoviesQueryDto): Promise<Movie[]> {
-    const { genreIds, search } = query;
+    const { genreIds, search, minRating, maxRating } = query;
+    const parsedMinRating = this.parseRating(minRating, 'minRating');
+    const parsedMaxRating = this.parseRating(maxRating, 'maxRating');
+
+    if (
+      parsedMinRating !== undefined &&
+      parsedMaxRating !== undefined &&
+      parsedMinRating > parsedMaxRating
+    ) {
+      throw new BadRequestException(
+        'minRating must be less than or equal to maxRating',
+      );
+    }
+
+    let rating: FindOperator<number> | undefined;
+
+    if (parsedMinRating !== undefined && parsedMaxRating !== undefined) {
+      rating = Between(parsedMinRating, parsedMaxRating);
+    } else if (parsedMinRating !== undefined) {
+      rating = MoreThanOrEqual(parsedMinRating);
+    } else if (parsedMaxRating !== undefined) {
+      rating = LessThanOrEqual(parsedMaxRating);
+    }
 
     const where = {
       ...(genreIds && { genres: { id: In(genreIds.split(',').map(Number)) } }),
       ...(search && { title: ILike(`%${search}%`) }),
+      ...(rating && { rating }),
       // example of other query params being used
       // ...(year && { year: Number(year) }),
-      // ...(rating && { rating: MoreThanOrEqual(Number(rating)) }),
     };
 
     const result = await this.movieRepository.find({
@@ -32,6 +66,23 @@ export class MovieService {
     });
 
     return result;
+  }
+
+  private parseRating(
+    value: string | undefined,
+    name: string,
+  ): number | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+
+    const rating = Number(value);
+
+    if (value.trim() === '' || !Number.isFinite(rating)) {
+      throw new BadRequestException(`${name} must be a valid number`);
+    }
+
+    return rating;
   }
 
   async findOne(id: number): Promise<Movie> {
