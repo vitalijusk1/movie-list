@@ -81,6 +81,16 @@ export class AuthService {
   //   }
   // }
 
+  async getCurrentUser(userId: number) {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const { password, ...result } = user;
+    return result;
+  }
+
   clearAuthCookie(res: any) {
     res.clearCookie('access_token');
   }

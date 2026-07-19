@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginAsync, logoutAsync } from "./authThunk";
+import {
+  getCurrentUserAsync,
+  loginAsync,
+  logoutAsync,
+  registerAsync,
+} from "./authThunk";
 
 interface AuthState {
   isLoading: boolean;
@@ -23,6 +28,15 @@ const authSlice = createSlice({
     builder.addCase(loginAsync.rejected, (state) => {
       state.isLoading = false;
     });
+    builder.addCase(registerAsync.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(registerAsync.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(registerAsync.rejected, (state) => {
+      state.isLoading = false;
+    });
     builder.addCase(logoutAsync.pending, (state) => {
       state.isLoading = true;
     });
@@ -30,6 +44,15 @@ const authSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(logoutAsync.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getCurrentUserAsync.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getCurrentUserAsync.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(getCurrentUserAsync.rejected, (state) => {
       state.isLoading = false;
     });
   },
