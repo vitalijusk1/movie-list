@@ -41,3 +41,16 @@ export const logoutAsync = createAsyncThunk(
     }
   },
 );
+
+export const getCurrentUserAsync = createAsyncThunk(
+  AUTH_ACTIONS.GET_CURRENT_USER,
+  async (_, { dispatch }) => {
+    try {
+      const response = await axiosInstance.get(apiRoutes.me());
+      dispatch(setUser(response.data));
+      return response.data;
+    } catch (error) {
+      console.error("Get current user failed:", error);
+    }
+  },
+);
