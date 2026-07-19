@@ -16,13 +16,15 @@ const MovieListPage = () => {
   const [searchParams] = useSearchParams();
   const genreIds = searchParams.get("genreIds")?.split(",").map(Number) ?? [];
   const search = searchParams.get("search") ?? "";
+  const minRating = searchParams.get("minRating") ?? undefined;
+  const maxRating = searchParams.get("maxRating") ?? undefined;
 
   useEffect(() => {
     dispatch(getGenresAsync());
   }, []);
 
   useEffect(() => {
-    dispatch(getMoviesAsync({ genreIds, search }));
+    dispatch(getMoviesAsync({ genreIds, search, minRating, maxRating }));
   }, [searchParams]);
 
   return (
