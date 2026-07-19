@@ -8,15 +8,24 @@ import type { Genre } from "./types";
 interface GetMoviesParams {
   genreIds?: number[];
   search?: string;
+  minRating?: string;
+  maxRating?: string;
 }
 
 export const getMoviesAsync = createAsyncThunk(
   MOVIE_ACTIONS.GET_ALL,
-  async ({ genreIds = [], search = "" }: GetMoviesParams = {}) => {
+  async ({
+    genreIds = [],
+    search = "",
+    minRating,
+    maxRating,
+  }: GetMoviesParams = {}) => {
     try {
       const params = new URLSearchParams();
       if (genreIds.length > 0) params.set("genreIds", genreIds.join(","));
       if (search.trim()) params.set("search", search.trim());
+      if (minRating) params.set("minRating", minRating);
+      if (maxRating) params.set("maxRating", maxRating);
       const query = params.toString() ? `?${params.toString()}` : "";
       const response = await axiosInstance.get(apiRoutes.movies(query));
       return response.data;

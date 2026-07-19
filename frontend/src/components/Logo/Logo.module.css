@@ -1,0 +1,19 @@
+.Logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.Icon {
+  width: 1.75rem;
+  height: 2rem;
+}
+
+.Wordmark {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  letter-spacing: -0.03em;
+}

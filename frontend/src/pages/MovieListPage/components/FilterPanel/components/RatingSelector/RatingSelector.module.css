@@ -1,0 +1,32 @@
+.Dropdowns {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.SelectWrapper {
+  position: relative;
+  flex: 1;
+}
+
+.Select {
+  width: 100%;
+  padding: var(--space-sm) calc(var(--space-md) + 1.5rem) var(--space-sm)
+    var(--space-md);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  appearance: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.Chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-md);
+  width: 1rem;
+  height: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-secondary);
+}

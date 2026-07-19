@@ -26,7 +26,6 @@ const GenreSelector = () => {
 
   return (
     <div className={styles.GenreSelector}>
-      <span className={styles.Label}>Genre</span>
       <div className={styles.Grid}>
         {genres.map((genre) => {
           const isSelected = selectedIds.includes(genre.id.toString());
