@@ -28,6 +28,8 @@ function parseRating(rating: string): number {
   return isNaN(parsed) ? 0 : parsed;
 }
 
+const shouldReset = process.argv.includes('--reset');
+
 async function seed() {
   await AppDataSource.initialize();
 
@@ -35,10 +37,17 @@ async function seed() {
   const movieRepo = AppDataSource.getRepository(Movie);
 
   const movieCount = await movieRepo.count();
-  if (movieCount > 0) {
-    console.log('Database already seeded, skipping.');
+  if (movieCount > 0 && !shouldReset) {
+    console.log('Database already seeded, skipping. Use --reset to reseed.');
     await AppDataSource.destroy();
     return;
+  }
+
+  if (shouldReset) {
+    console.log('Resetting existing data...');
+    await AppDataSource.query('DELETE FROM movie_related');
+    await AppDataSource.query('DELETE FROM movie_genres');
+    await AppDataSource.query('TRUNCATE TABLE movie RESTART IDENTITY CASCADE');
   }
 
   const genreNames: string[] = JSON.parse(
@@ -98,7 +107,7 @@ async function seed() {
           m.id !== movie.id &&
           (m.genres ?? []).some((g) => movieGenreIds.has(g.id)),
       )
-      .slice(0, 5);
+      .slice(0, 15);
 
     await movieRepo.save(movie);
   }

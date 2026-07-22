@@ -62,7 +62,7 @@ export class MovieService {
 
     const result = await this.movieRepository.find({
       where,
-      relations: ['genres', 'relatedMovies'],
+      relations: ['genres'],
     });
 
     return result;

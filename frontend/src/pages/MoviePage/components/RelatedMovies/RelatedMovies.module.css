@@ -1,0 +1,39 @@
+.relatedMoviesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.relatedMoviesTitle {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.carousel {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--space-sm);
+  list-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background-color: var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+.carouselItem {
+  flex: 0 0 auto;
+  width: 180px;
+  scroll-snap-align: start;
+}

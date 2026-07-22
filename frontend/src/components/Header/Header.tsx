@@ -6,7 +6,6 @@ import Button from "../Button/Button";
 import Logo from "../Logo/Logo";
 import styles from "./Header.module.css";
 import { useNavigate } from "react-router-dom";
-import utilStyles from "../../styles/Utils.module.css";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +28,7 @@ const Header = () => {
 
   return (
     <header className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}>
-      <div className={`${utilStyles.container} ${styles.headerWrapper}`}>
+      <div className={` ${styles.headerWrapper}`}>
         <Logo />
         <nav className={styles.nav}>
           <Button onClick={handleLogout}>Logout</Button>

@@ -20,18 +20,14 @@ export const getMoviesAsync = createAsyncThunk(
     minRating,
     maxRating,
   }: GetMoviesParams = {}) => {
-    try {
-      const params = new URLSearchParams();
-      if (genreIds.length > 0) params.set("genreIds", genreIds.join(","));
-      if (search.trim()) params.set("search", search.trim());
-      if (minRating) params.set("minRating", minRating);
-      if (maxRating) params.set("maxRating", maxRating);
-      const query = params.toString() ? `?${params.toString()}` : "";
-      const response = await axiosInstance.get(apiRoutes.movies(query));
-      return response.data;
-    } catch (error) {
-      console.error("Failed to fetch movies:", error);
-    }
+    const params = new URLSearchParams();
+    if (genreIds.length > 0) params.set("genreIds", genreIds.join(","));
+    if (search.trim()) params.set("search", search.trim());
+    if (minRating) params.set("minRating", minRating);
+    if (maxRating) params.set("maxRating", maxRating);
+    const query = params.toString() ? `?${params.toString()}` : "";
+    const response = await axiosInstance.get(apiRoutes.movies(query));
+    return response.data;
   },
 );
 

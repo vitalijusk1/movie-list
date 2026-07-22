@@ -1,5 +1,15 @@
 .Seperator {
-  height: 1px;
   background-color: var(--border-default);
+}
+
+.horizontal {
+  width: 100%;
+  height: 1px;
   margin: var(--space-md) 0;
+}
+
+.vertical {
+  width: 1px;
+  align-self: stretch;
+  margin: 0 var(--space-md);
 }

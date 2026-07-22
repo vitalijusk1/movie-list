@@ -1,0 +1,18 @@
+.movieDescriptionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.movieDescriptionTitle {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+.movieDescription {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  max-width: 800px;
+}
