@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import styles from "./MovieCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 interface MovieCardProps {
   id: number;
@@ -9,8 +10,14 @@ interface MovieCardProps {
 }
 
 const MovieCard: FC<MovieCardProps> = ({ id, title, rating, posterUrl }) => {
+  const navigate = useNavigate();
   return (
-    <div>
+    <div
+      className={styles.MovieCardWrapper}
+      onClick={() => {
+        navigate(`/movie/${id}`);
+      }}
+    >
       <div
         className={styles.MovieCardPoster}
         style={{ backgroundImage: `url(${posterUrl})` }}
