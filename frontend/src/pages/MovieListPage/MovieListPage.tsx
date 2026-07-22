@@ -28,12 +28,10 @@ const MovieListPage = () => {
   }, [searchParams]);
 
   return (
-    <section
-      className={`${utilsStyles.pageWithHeader} ${utilsStyles.container}`}
-    >
+    <div className={utilsStyles.pageWithHeader}>
       <FilterPanel />
       <MoviesGrid movies={movies} />
-    </section>
+    </div>
   );
 };
 

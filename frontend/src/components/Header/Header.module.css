@@ -1,13 +1,14 @@
 .header {
-  background-color: none;
+  height: 64px;
+  display: flex;
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 100;
   color: var(--text-primary);
   margin: 0 auto;
   width: 100%;
-  border: 1px solid transparent;
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
+
   transition:
     background-color var(--transition-base),
     box-shadow var(--transition-base),
@@ -19,10 +20,14 @@
 }
 
 .headerWrapper {
-  padding: var(--space-md);
+  height: 100%;
+  width: 100%;
+  padding: 0 var(--space-md);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .nav {

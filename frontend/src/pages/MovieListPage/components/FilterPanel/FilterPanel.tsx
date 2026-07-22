@@ -5,6 +5,7 @@ import GenreSelector from "./components/GenreSelector/GenreSelector";
 import RatingSelector from "./components/RatingSelector/RatingSelector";
 import FilterSection from "./components/FilterSection/FilterSection";
 import Seperator from "../../../../components/Seperator/Seperator";
+import utilsStyles from "../../../../styles/Utils.module.css";
 
 const filterSections = [
   { title: "Search", Component: SearchInput },
@@ -14,16 +15,18 @@ const filterSections = [
 
 const FilterPanel = () => {
   return (
-    <div className={styles.FilterPanelWrapper}>
-      {filterSections.map(({ title, Component }, index) => (
-        <Fragment key={title}>
-          <FilterSection title={title}>
-            <Component />
-          </FilterSection>
-          {index < filterSections.length - 1 && <Seperator />}
-        </Fragment>
-      ))}
-    </div>
+    <section className={`${utilsStyles.container}`}>
+      <div className={styles.FilterPanelWrapper}>
+        {filterSections.map(({ title, Component }, index) => (
+          <Fragment key={title}>
+            <FilterSection title={title}>
+              <Component />
+            </FilterSection>
+            {index < filterSections.length - 1 && <Seperator />}
+          </Fragment>
+        ))}
+      </div>
+    </section>
   );
 };
 
