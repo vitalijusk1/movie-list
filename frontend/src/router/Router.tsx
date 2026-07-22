@@ -7,10 +7,23 @@ import MovieListPage from "../pages/MovieListPage/MovieListPage";
 import Layout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import RegisterSuccessPage from "../pages/AuthPages/RegisterSuccessPage/RegisterSuccessPage";
+import MoviePage from "../pages/MoviePage/MoviePage";
+import { useAppSelector } from "../store/hooks";
 
 const Router = () => {
+  const currentUser = useAppSelector((state) => state.user.user);
+
   return (
     <Routes>
+      <Route
+        path="/"
+        element={
+          <Navigate
+            to={currentUser ? paths.movieList() : paths.login()}
+            replace
+          />
+        }
+      />
       <Route element={<Layout />}>
         <Route path={paths.login()} element={<LoginPage />} />
         <Route path={paths.register()} element={<RegisterPage />} />
@@ -21,8 +34,9 @@ const Router = () => {
       </Route>
       <Route element={<MainLayout />}>
         <Route path={paths.movieList()} element={<MovieListPage />} />
+        <Route path={paths.movie(":movieId")} element={<MoviePage />} />
       </Route>
-      <Route path="*" element={<Navigate to={paths.login()} />} />
+      {/* <Route path="*" element={<Navigate to={paths.login()} />} /> */}
     </Routes>
   );
 };
