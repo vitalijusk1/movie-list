@@ -14,7 +14,10 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
-      if (error.response.status === 401) {
+      if (
+        error.response.status === 401 &&
+        window.location.pathname !== paths.login()
+      ) {
         window.location.href = paths.login();
       }
       console.error("API Error:", error.response.data);
