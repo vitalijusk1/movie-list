@@ -43,3 +43,26 @@
 .secondary:active {
   background-color: var(--surface-active);
 }
+
+.button:disabled,
+.button[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.default:disabled,
+.default[aria-disabled="true"],
+.default:disabled:hover,
+.default[aria-disabled="true"]:hover,
+.default:disabled:active,
+.default[aria-disabled="true"]:active {
+  background-color: var(--accent-primary);
+}
+
+.secondary:disabled,
+.secondary[aria-disabled="true"],
+.secondary:disabled:hover,
+.secondary[aria-disabled="true"]:hover,
+.secondary:disabled:active,
+.secondary[aria-disabled="true"]:active {
+  background-color: transparent;
+}

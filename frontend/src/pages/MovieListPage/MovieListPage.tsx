@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import FilterPanel from "./components/FilterPanel/FilterPanel";
+import Pagination from "./components/Pagination/Pagination";
 
 const MovieListPage = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const MovieListPage = () => {
     <div className={utilsStyles.pageWithHeader}>
       <FilterPanel />
       <MoviesGrid movies={movies} />
+      <Pagination />
     </div>
   );
 };
