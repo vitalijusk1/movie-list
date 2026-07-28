@@ -1,0 +1,80 @@
+.PaginationWrapper {
+  padding: var(--space-md) 0;
+}
+
+.Pagination {
+  max-width: 1200px;
+  padding: 0 var(--space-md);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.Info {
+  color: var(--text-secondary);
+  font-size: var(--text-base);
+}
+
+.Controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.SelectWrapper {
+  /* position: relative; */
+  /* min-width: 8rem; */
+}
+
+.Select {
+  /* width: 100%; */
+  padding: var(--space-sm);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  appearance: none;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  line-height: 1.375;
+  cursor: pointer;
+}
+
+.Select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.Chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-md);
+  width: 1rem;
+  height: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-secondary);
+}
+
+.ButtonGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.ButtonGroup button,
+.PageNumbers button {
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.PageNumbers {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}

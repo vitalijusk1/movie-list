@@ -10,6 +10,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   to?: string;
   onClick?: () => void;
+  disabled?: boolean;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -19,6 +20,7 @@ const Button: FC<ButtonProps> = ({
   type = "button",
   onClick,
   to,
+  disabled = false,
 }) => {
   const variantClass =
     variant === "secondary" ? styles.secondary : styles.default;
@@ -30,6 +32,7 @@ const Button: FC<ButtonProps> = ({
           to={to}
           className={`${styles.button} ${variantClass} ${styles.link}`}
           style={style}
+          aria-disabled={disabled}
         >
           {children}
         </Link>
@@ -39,6 +42,7 @@ const Button: FC<ButtonProps> = ({
           className={`${styles.button} ${variantClass}`}
           style={style}
           onClick={onClick}
+          disabled={disabled}
         >
           {children}
         </button>
