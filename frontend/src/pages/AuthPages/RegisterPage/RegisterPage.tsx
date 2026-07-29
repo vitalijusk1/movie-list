@@ -9,7 +9,7 @@ import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { registerSchema, type RegisterFormValues } from "./registerSchema";
 import { useAppDispatch } from "../../../store/hooks";
-import { registerAsync } from "../../../store/slices/AuthSlice/authThunk";
+import { registerAsync } from "../../../store/slices/UserSlice/userThunk";
 import utilsStyles from "../../../styles/Utils.module.css";
 
 const RegisterPage = () => {

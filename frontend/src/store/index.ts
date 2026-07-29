@@ -10,7 +10,6 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import authReducer from "./slices/AuthSlice/authSlice";
 import moviesReducer from "./slices/MoviesSlice/moviesSlice";
 import userReducer from "./slices/UserSlice/userSlice";
 
@@ -18,11 +17,10 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["auth"],
+  whitelist: [],
 };
 
 const rootReducer = combineReducers({
-  auth: authReducer,
   movies: moviesReducer,
   user: userReducer,
 });

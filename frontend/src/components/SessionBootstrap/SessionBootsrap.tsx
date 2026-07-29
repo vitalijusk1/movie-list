@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../store/hooks";
-import { getCurrentUserAsync } from "../../store/slices/AuthSlice/authThunk";
+import { getCurrentUserAsync } from "../../store/slices/UserSlice/userThunk";
 import Router from "../../router/Router";
 
 const SessionBootstrap = () => {
