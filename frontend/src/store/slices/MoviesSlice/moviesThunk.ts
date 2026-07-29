@@ -3,28 +3,37 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiRoutes } from "../../../api/api";
 import { MOVIE_ACTIONS } from "./movieActionTypes";
 import axiosInstance from "../../../api/axiosInstance";
-import type { Genre } from "./types";
+import type { Genre, PaginatedMoviesResponse } from "./types";
 
 interface GetMoviesParams {
   genreIds?: number[];
   search?: string;
   minRating?: string;
   maxRating?: string;
+  page?: number;
+  perPage?: number;
 }
 
-export const getMoviesAsync = createAsyncThunk(
+export const getMoviesAsync = createAsyncThunk<
+  PaginatedMoviesResponse,
+  GetMoviesParams
+>(
   MOVIE_ACTIONS.GET_ALL,
   async ({
     genreIds = [],
     search = "",
     minRating,
     maxRating,
+    page = 1,
+    perPage = 12,
   }: GetMoviesParams = {}) => {
     const params = new URLSearchParams();
     if (genreIds.length > 0) params.set("genreIds", genreIds.join(","));
     if (search.trim()) params.set("search", search.trim());
     if (minRating) params.set("minRating", minRating);
     if (maxRating) params.set("maxRating", maxRating);
+    params.set("page", String(page));
+    params.set("perPage", String(perPage));
     const query = params.toString() ? `?${params.toString()}` : "";
     const response = await axiosInstance.get(apiRoutes.movies(query));
     return response.data;

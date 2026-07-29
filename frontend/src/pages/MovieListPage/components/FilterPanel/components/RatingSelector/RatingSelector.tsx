@@ -36,6 +36,7 @@ const RatingSelector = () => {
       next.delete(name);
     }
 
+    next.set("page", "1");
     setSearchParams(next);
   };
 

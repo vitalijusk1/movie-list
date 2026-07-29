@@ -16,6 +16,7 @@ const SearchInput = () => {
       } else {
         next.delete("search");
       }
+      next.set("page", "1");
       return next;
     });
   }, [debouncedValue]);
