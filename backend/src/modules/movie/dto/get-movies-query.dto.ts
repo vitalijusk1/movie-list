@@ -3,4 +3,6 @@ export class GetMoviesQueryDto {
   search?: string;
   minRating?: string;
   maxRating?: string;
+  page?: string;
+  perPage?: string;
 }
