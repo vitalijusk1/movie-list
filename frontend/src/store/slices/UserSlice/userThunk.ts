@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { LoginReq, RegisterReq } from "./types";
 import axiosInstance from "../../../api/axiosInstance";
 import { apiRoutes } from "../../../api/api";
-import { clearUser, setUser } from "../UserSlice/userSlice";
-import { AUTH_ACTIONS } from "./authActionTypes";
+import { clearUser, setUser } from "./userSlice";
+import { USER_ACTIONS } from "./userActionTypes";
 
 export const registerAsync = createAsyncThunk(
-  AUTH_ACTIONS.REGISTER,
+  USER_ACTIONS.REGISTER,
   async (payload: RegisterReq) => {
     try {
       const response = await axiosInstance.post(apiRoutes.register(), payload);
@@ -18,7 +18,7 @@ export const registerAsync = createAsyncThunk(
 );
 
 export const loginAsync = createAsyncThunk(
-  AUTH_ACTIONS.LOGIN,
+  USER_ACTIONS.LOGIN,
   async (payload: LoginReq, { dispatch }) => {
     try {
       const response = await axiosInstance.post(apiRoutes.login(), payload);
@@ -31,7 +31,7 @@ export const loginAsync = createAsyncThunk(
 );
 
 export const logoutAsync = createAsyncThunk(
-  AUTH_ACTIONS.LOGOUT,
+  USER_ACTIONS.LOGOUT,
   async (_, { dispatch }) => {
     try {
       await axiosInstance.post(apiRoutes.logout());
@@ -43,7 +43,7 @@ export const logoutAsync = createAsyncThunk(
 );
 
 export const getCurrentUserAsync = createAsyncThunk(
-  AUTH_ACTIONS.GET_CURRENT_USER,
+  USER_ACTIONS.GET_CURRENT_USER,
   async (_, { dispatch }) => {
     try {
       const response = await axiosInstance.get(apiRoutes.me());

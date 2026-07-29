@@ -9,7 +9,7 @@ import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useAppDispatch } from "../../../store/hooks";
-import { loginAsync } from "../../../store/slices/AuthSlice/authThunk";
+import { loginAsync } from "../../../store/slices/UserSlice/userThunk";
 import utilsStyles from "../../../styles/Utils.module.css";
 
 const LoginPage = () => {

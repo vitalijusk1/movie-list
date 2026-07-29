@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { paths } from "../../router/paths";
 import { useAppDispatch } from "../../store/hooks";
-import { logoutAsync } from "../../store/slices/AuthSlice/authThunk";
+import { logoutAsync } from "../../store/slices/UserSlice/userThunk";
 import Button from "../Button/Button";
 import Logo from "../Logo/Logo";
 import styles from "./Header.module.css";
