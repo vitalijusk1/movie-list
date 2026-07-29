@@ -27,10 +27,12 @@ export class MovieService {
     private readonly genreRepository: Repository<Genre>,
   ) {}
 
-  async findAll(query: GetMoviesQueryDto): Promise<Movie[]> {
-    const { genreIds, search, minRating, maxRating } = query;
+  async findAll(query: GetMoviesQueryDto) {
+    const { genreIds, search, minRating, maxRating, page, perPage } = query;
     const parsedMinRating = this.parseRating(minRating, 'minRating');
     const parsedMaxRating = this.parseRating(maxRating, 'maxRating');
+    const parsedPage = this.parsePositiveInt(page, 'page') ?? 1;
+    const parsedPerPage = this.parsePositiveInt(perPage, 'perPage') ?? 12;
 
     if (
       parsedMinRating !== undefined &&
@@ -60,12 +62,14 @@ export class MovieService {
       // ...(year && { year: Number(year) }),
     };
 
-    const result = await this.movieRepository.find({
+    const [movies, total] = await this.movieRepository.findAndCount({
       where,
       relations: ['genres'],
+      skip: (parsedPage - 1) * parsedPerPage,
+      take: parsedPerPage,
     });
 
-    return result;
+    return { movies, total, page: parsedPage, perPage: parsedPerPage };
   }
 
   private parseRating(
@@ -83,6 +87,28 @@ export class MovieService {
     }
 
     return rating;
+  }
+
+  private parsePositiveInt(
+    value: string | undefined,
+    name: string,
+  ): number | undefined {
+    if (value === undefined) {
+      return undefined;
+    }
+
+    const int = Number(value);
+
+    if (
+      value.trim() === '' ||
+      !Number.isFinite(int) ||
+      !Number.isInteger(int) ||
+      int < 1
+    ) {
+      throw new BadRequestException(`${name} must be a positive integer`);
+    }
+
+    return int;
   }
 
   async findOne(id: number): Promise<Movie> {
