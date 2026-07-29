@@ -14,3 +14,10 @@ export interface Movie {
   genres: Genre[];
   relatedMovies: Movie[];
 }
+
+export interface PaginatedMoviesResponse {
+  movies: Movie[];
+  total: number;
+  page: number;
+  perPage: number;
+}

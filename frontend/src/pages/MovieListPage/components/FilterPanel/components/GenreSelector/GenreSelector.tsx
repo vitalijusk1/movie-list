@@ -21,6 +21,7 @@ const GenreSelector = () => {
       next.set("genreIds", [...selectedIds, id].join(","));
     }
 
+    next.set("page", "1");
     setSearchParams(next);
   };
 

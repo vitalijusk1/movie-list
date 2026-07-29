@@ -14,25 +14,30 @@ import Pagination from "./components/Pagination/Pagination";
 const MovieListPage = () => {
   const dispatch = useAppDispatch();
   const movies = useAppSelector((state) => state.movies.movies);
+  const total = useAppSelector((state) => state.movies.total);
   const [searchParams] = useSearchParams();
   const genreIds = searchParams.get("genreIds")?.split(",").map(Number) ?? [];
   const search = searchParams.get("search") ?? "";
   const minRating = searchParams.get("minRating") ?? undefined;
   const maxRating = searchParams.get("maxRating") ?? undefined;
+  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const perPage = Math.max(1, Number(searchParams.get("perPage")) || 12);
 
   useEffect(() => {
     dispatch(getGenresAsync());
   }, []);
 
   useEffect(() => {
-    dispatch(getMoviesAsync({ genreIds, search, minRating, maxRating }));
-  }, [searchParams]);
+    dispatch(
+      getMoviesAsync({ genreIds, search, minRating, maxRating, page, perPage }),
+    );
+  }, [searchParams, page, perPage]);
 
   return (
     <div className={utilsStyles.pageWithHeader}>
       <FilterPanel />
       <MoviesGrid movies={movies} />
-      <Pagination />
+      <Pagination page={page} perPage={perPage} total={total} />
     </div>
   );
 };

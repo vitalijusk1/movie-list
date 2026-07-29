@@ -5,12 +5,14 @@ import type { Movie, Genre } from "./types";
 interface MoviesState {
   genres: Genre[];
   movies: Movie[];
+  total: number;
   isLoading: boolean;
 }
 
 const initialState: MoviesState = {
   genres: [],
   movies: [],
+  total: 0,
   isLoading: false,
 };
 
@@ -24,7 +26,8 @@ const moviesSlice = createSlice({
     });
     builder.addCase(getMoviesAsync.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.movies = action.payload;
+      state.movies = action.payload.movies;
+      state.total = action.payload.total;
     });
     builder.addCase(getMoviesAsync.rejected, (state) => {
       state.isLoading = false;
