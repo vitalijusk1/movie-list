@@ -8,13 +8,17 @@ import { registerFields } from "./registerFormData";
 import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { registerSchema, type RegisterFormValues } from "./registerSchema";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { registerAsync } from "../../../store/slices/UserSlice/userThunk";
 import utilsStyles from "../../../styles/Utils.module.css";
+import Loader from "../../../components/Loader/Loader";
 
 const RegisterPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isAuthFormLoading = useAppSelector(
+    (state) => state.user.isAuthFormLoading,
+  );
   const {
     register,
     handleSubmit,
@@ -62,7 +66,13 @@ const RegisterPage = () => {
               )}
             </div>
           ))}
-          <Button type="submit">Register</Button>
+          <Button
+            type="submit"
+            style={{ height: "var(--control-height-sm)" }}
+            disabled={isAuthFormLoading}
+          >
+            {isAuthFormLoading ? <Loader /> : "Register"}
+          </Button>
           <p className={authStyles.authLink}>
             Already have an account? <Link to={paths.login()}>Login</Link>
           </p>

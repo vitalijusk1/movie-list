@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { paths } from "../../router/paths";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { logoutAsync } from "../../store/slices/UserSlice/userThunk";
 import Button from "../Button/Button";
 import Logo from "../Logo/Logo";
+import Loader from "../Loader/Loader";
 import styles from "./Header.module.css";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
+  const isLogoutLoading = useAppSelector((state) => state.user.isLogoutLoading);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 8);
@@ -23,7 +22,6 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutAsync());
-    navigate(paths.login());
   };
 
   return (
@@ -31,7 +29,16 @@ const Header = () => {
       <div className={` ${styles.headerWrapper}`}>
         <Logo />
         <nav className={styles.nav}>
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button
+            onClick={handleLogout}
+            style={{
+              height: "var(--control-height-sm)",
+              width: "var(--control-width-sm)",
+            }}
+            disabled={isLogoutLoading}
+          >
+            {isLogoutLoading ? <Loader /> : "Logout"}
+          </Button>
         </nav>
       </div>
     </header>

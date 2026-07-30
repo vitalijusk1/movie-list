@@ -5,21 +5,16 @@ import styles from "./Loader.module.css";
 interface LoaderProps {
   size?: number;
   color?: string;
-  fullScreen?: boolean;
   style?: CSSProperties;
 }
 
 const Loader: FC<LoaderProps> = ({
-  size = 40,
-  color = "var(--accent-primary)",
-  fullScreen = false,
+  size = 16,
+  color = "var(--violet-50)",
   style,
 }) => {
   return (
-    <div
-      className={fullScreen ? styles.fullScreen : styles.container}
-      style={style}
-    >
+    <div className={styles.loaderWrapper} style={style}>
       <ClipLoader size={size} color={color} />
     </div>
   );
