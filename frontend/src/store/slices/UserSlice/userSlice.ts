@@ -9,12 +9,16 @@ import {
 
 interface UserState {
   user: User | null;
-  isLoading: boolean;
+  isAuthFormLoading: boolean;
+  isLogoutLoading: boolean;
+  isSessionLoading: boolean;
 }
 
 const initialState: UserState = {
   user: null,
-  isLoading: false,
+  isAuthFormLoading: false,
+  isLogoutLoading: false,
+  isSessionLoading: false,
 };
 
 const userSlice = createSlice({
@@ -30,40 +34,40 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(loginAsync.pending, (state) => {
-      state.isLoading = true;
+      state.isAuthFormLoading = true;
     });
     builder.addCase(loginAsync.fulfilled, (state) => {
-      state.isLoading = false;
+      state.isAuthFormLoading = false;
     });
     builder.addCase(loginAsync.rejected, (state) => {
-      state.isLoading = false;
+      state.isAuthFormLoading = false;
     });
     builder.addCase(registerAsync.pending, (state) => {
-      state.isLoading = true;
+      state.isAuthFormLoading = true;
     });
     builder.addCase(registerAsync.fulfilled, (state) => {
-      state.isLoading = false;
+      state.isAuthFormLoading = false;
     });
     builder.addCase(registerAsync.rejected, (state) => {
-      state.isLoading = false;
+      state.isAuthFormLoading = false;
     });
     builder.addCase(logoutAsync.pending, (state) => {
-      state.isLoading = true;
+      state.isLogoutLoading = true;
     });
     builder.addCase(logoutAsync.fulfilled, (state) => {
-      state.isLoading = false;
+      state.isLogoutLoading = false;
     });
     builder.addCase(logoutAsync.rejected, (state) => {
-      state.isLoading = false;
+      state.isLogoutLoading = false;
     });
     builder.addCase(getCurrentUserAsync.pending, (state) => {
-      state.isLoading = true;
+      state.isSessionLoading = true;
     });
     builder.addCase(getCurrentUserAsync.fulfilled, (state) => {
-      state.isLoading = false;
+      state.isSessionLoading = false;
     });
     builder.addCase(getCurrentUserAsync.rejected, (state) => {
-      state.isLoading = false;
+      state.isSessionLoading = false;
     });
   },
 });

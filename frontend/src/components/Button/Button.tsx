@@ -6,7 +6,6 @@ interface ButtonProps {
   children: React.ReactNode;
   variant?: "default" | "secondary";
   style?: CSSProperties;
-
   type?: "button" | "submit" | "reset";
   to?: string;
   onClick?: () => void;

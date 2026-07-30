@@ -8,13 +8,17 @@ import { loginFields } from "./loginFormData";
 import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
-import { useAppDispatch } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { loginAsync } from "../../../store/slices/UserSlice/userThunk";
 import utilsStyles from "../../../styles/Utils.module.css";
+import Loader from "../../../components/Loader/Loader";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isAuthFormLoading = useAppSelector(
+    (state) => state.user.isAuthFormLoading,
+  );
   const {
     register,
     handleSubmit,
@@ -57,7 +61,13 @@ const LoginPage = () => {
               )}
             </div>
           ))}
-          <Button type="submit">Login</Button>
+          <Button
+            type="submit"
+            style={{ height: "var(--control-height-sm)" }}
+            disabled={isAuthFormLoading}
+          >
+            {isAuthFormLoading ? <Loader /> : "Login"}
+          </Button>
           <p className={authStyles.authLink}>
             Don't have an account? <Link to={paths.register()}>Register</Link>
           </p>
