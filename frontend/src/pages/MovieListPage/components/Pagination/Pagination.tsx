@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import styles from "./Pagination.module.css";
 import Button from "../../../../components/Button/Button";
+import { useAppSelector } from "../../../../store/hooks";
 
 const perPageOptions = [8, 12, 24, 48];
 
@@ -12,6 +13,7 @@ interface PaginationProps {
 
 const Pagination = ({ page, perPage, total }: PaginationProps) => {
   const [, setSearchParams] = useSearchParams();
+  const isLoading = useAppSelector((state) => state.movies.isLoading);
   const totalPages = Math.max(1, Math.ceil(total / perPage));
   const currentPage = Math.min(page, totalPages);
 
@@ -51,12 +53,15 @@ const Pagination = ({ page, perPage, total }: PaginationProps) => {
         <span className={styles.Info}>
           Page {currentPage} of {totalPages}
         </span>
-        <div className={styles.Controls}>
+        <div
+          className={`${styles.Controls} ${isLoading ? styles.loading : ""}`}
+        >
           <select
             aria-label="Items per page"
             className={styles.Select}
             value={perPage}
             onChange={(event) => updatePerPage(Number(event.target.value))}
+            disabled={isLoading}
           >
             {perPageOptions.map((option) => (
               <option key={option} value={option}>
@@ -69,7 +74,7 @@ const Pagination = ({ page, perPage, total }: PaginationProps) => {
             <Button
               variant="secondary"
               onClick={() => updatePage(currentPage - 1)}
-              disabled={currentPage <= 1}
+              disabled={currentPage <= 1 || isLoading}
             >
               Prev
             </Button>
@@ -80,7 +85,7 @@ const Pagination = ({ page, perPage, total }: PaginationProps) => {
                   key={p}
                   variant={p === currentPage ? "default" : "secondary"}
                   onClick={() => updatePage(p)}
-                  disabled={p === currentPage}
+                  disabled={p === currentPage || isLoading}
                 >
                   {p}
                 </Button>
@@ -90,7 +95,7 @@ const Pagination = ({ page, perPage, total }: PaginationProps) => {
             <Button
               variant="secondary"
               onClick={() => updatePage(currentPage + 1)}
-              disabled={currentPage >= totalPages}
+              disabled={currentPage >= totalPages || isLoading}
             >
               Next
             </Button>
