@@ -3,6 +3,7 @@ import styles from "./FilterPanel.module.css";
 import SearchInput from "./components/SearchInput/SearchInput";
 import GenreSelector from "./components/GenreSelector/GenreSelector";
 import RatingSelector from "./components/RatingSelector/RatingSelector";
+import SortSelector from "./components/SortSelector/SortSelector";
 import FilterSection from "./components/FilterSection/FilterSection";
 import Seperator from "../../../../components/Seperator/Seperator";
 import utilsStyles from "../../../../styles/Utils.module.css";
@@ -11,6 +12,7 @@ const filterSections = [
   { title: "Search", Component: SearchInput },
   { title: "Genre", Component: GenreSelector },
   { title: "Rating", Component: RatingSelector },
+  { title: "Sort by", Component: SortSelector },
 ];
 
 const FilterPanel = () => {
