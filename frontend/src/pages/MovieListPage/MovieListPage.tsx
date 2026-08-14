@@ -5,7 +5,7 @@ import {
   getMoviesAsync,
   getGenresAsync,
 } from "../../store/slices/MoviesSlice/moviesThunk";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import FilterPanel from "./components/FilterPanel/FilterPanel";
@@ -22,10 +22,29 @@ const MovieListPage = () => {
   const maxRating = searchParams.get("maxRating") ?? undefined;
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
   const perPage = Math.max(1, Number(searchParams.get("perPage")) || 12);
+  const sort = searchParams.get("sort") ?? undefined;
 
   useEffect(() => {
     dispatch(getGenresAsync());
   }, []);
+
+  const sortedMovies = useMemo(() => {
+    if (!sort) return movies;
+    const [field, order] = sort.split("-");
+    const sorted = [...movies];
+    sorted.sort((a, b) => {
+      let comparison = 0;
+      if (field === "title") {
+        comparison = a.title.localeCompare(b.title);
+      } else if (field === "rating") {
+        comparison = a.rating - b.rating;
+      } else if (field === "year") {
+        comparison = a.year - b.year;
+      }
+      return order === "asc" ? comparison : -comparison;
+    });
+    return sorted;
+  }, [movies, sort]);
 
   useEffect(() => {
     dispatch(
@@ -36,7 +55,7 @@ const MovieListPage = () => {
   return (
     <div className={utilsStyles.pageWithHeader}>
       <FilterPanel />
-      <MoviesGrid movies={movies} />
+      <MoviesGrid movies={sortedMovies} />
       <Pagination page={page} perPage={perPage} total={total} />
     </div>
   );
