@@ -3,6 +3,11 @@ export interface Genre {
   name: string;
 }
 
+export interface SortOption {
+  value: string;
+  label: string;
+}
+
 export interface Movie {
   id: number;
   title: string;
