@@ -1,18 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import Selector from "../../../../../../components/Selector/Selector";
-
-const sortOptions = [
-  { value: "", label: "Default" },
-  { value: "title-asc", label: "Title (A-Z)" },
-  { value: "title-desc", label: "Title (Z-A)" },
-  { value: "rating-desc", label: "Rating (high to low)" },
-  { value: "rating-asc", label: "Rating (low to high)" },
-  { value: "year-desc", label: "Year (newest first)" },
-  { value: "year-asc", label: "Year (oldest first)" },
-];
+import { useAppSelector } from "../../../../../../store/hooks";
 
 const SortSelector = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const sortOptions = useAppSelector((state) => state.movies.sortOptions);
   const value = searchParams.get("sort") ?? "";
 
   const handleChange = (sort: string) => {
@@ -22,6 +14,7 @@ const SortSelector = () => {
     } else {
       next.delete("sort");
     }
+    next.set("page", "1");
     setSearchParams(next);
   };
 
@@ -30,7 +23,7 @@ const SortSelector = () => {
       ariaLabel="Sort by"
       value={value}
       onChange={handleChange}
-      options={sortOptions}
+      options={[{ value: "", label: "Default" }, ...sortOptions]}
     />
   );
 };

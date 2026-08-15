@@ -4,6 +4,7 @@ import { useAppDispatch } from "../../store/hooks";
 import {
   getMoviesAsync,
   getGenresAsync,
+  getSortOptionsAsync,
 } from "../../store/slices/MoviesSlice/moviesThunk";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -22,14 +23,24 @@ const MovieListPage = () => {
   const maxRating = searchParams.get("maxRating") ?? undefined;
   const page = Math.max(1, Number(searchParams.get("page")) || 1);
   const perPage = Math.max(1, Number(searchParams.get("perPage")) || 12);
+  const sort = searchParams.get("sort") ?? undefined;
 
   useEffect(() => {
     dispatch(getGenresAsync());
+    dispatch(getSortOptionsAsync());
   }, []);
 
   useEffect(() => {
     dispatch(
-      getMoviesAsync({ genreIds, search, minRating, maxRating, page, perPage }),
+      getMoviesAsync({
+        genreIds,
+        search,
+        minRating,
+        maxRating,
+        page,
+        perPage,
+        sort,
+      }),
     );
   }, [searchParams, page, perPage]);
 
