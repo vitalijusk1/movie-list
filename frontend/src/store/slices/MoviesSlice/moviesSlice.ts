@@ -1,10 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMoviesAsync, getGenresAsync } from "./moviesThunk";
-import type { Movie, Genre } from "./types";
+import {
+  getMoviesAsync,
+  getGenresAsync,
+  getSortOptionsAsync,
+} from "./moviesThunk";
+import type { Movie, Genre, SortOption } from "./types";
 
 interface MoviesState {
   genres: Genre[];
   movies: Movie[];
+  sortOptions: SortOption[];
   total: number;
   isLoading: boolean;
 }
@@ -12,6 +17,7 @@ interface MoviesState {
 const initialState: MoviesState = {
   genres: [],
   movies: [],
+  sortOptions: [],
   total: 0,
   isLoading: false,
 };
@@ -41,6 +47,9 @@ const moviesSlice = createSlice({
     });
     builder.addCase(getGenresAsync.rejected, (state) => {
       state.isLoading = false;
+    });
+    builder.addCase(getSortOptionsAsync.fulfilled, (state, action) => {
+      state.sortOptions = action.payload;
     });
   },
 });

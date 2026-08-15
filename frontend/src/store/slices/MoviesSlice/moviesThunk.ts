@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiRoutes } from "../../../api/api";
 import { MOVIE_ACTIONS } from "./movieActionTypes";
 import axiosInstance from "../../../api/axiosInstance";
-import type { Genre, PaginatedMoviesResponse } from "./types";
+import type { Genre, PaginatedMoviesResponse, SortOption } from "./types";
 
 interface GetMoviesParams {
   genreIds?: number[];
@@ -12,6 +12,7 @@ interface GetMoviesParams {
   maxRating?: string;
   page?: number;
   perPage?: number;
+  sort?: string;
 }
 
 export const getMoviesAsync = createAsyncThunk<
@@ -26,12 +27,14 @@ export const getMoviesAsync = createAsyncThunk<
     maxRating,
     page = 1,
     perPage = 12,
+    sort,
   }: GetMoviesParams = {}) => {
     const params = new URLSearchParams();
     if (genreIds.length > 0) params.set("genreIds", genreIds.join(","));
     if (search.trim()) params.set("search", search.trim());
     if (minRating) params.set("minRating", minRating);
     if (maxRating) params.set("maxRating", maxRating);
+    if (sort) params.set("sort", sort);
     params.set("page", String(page));
     params.set("perPage", String(perPage));
     const query = params.toString() ? `?${params.toString()}` : "";
@@ -48,6 +51,19 @@ export const getGenresAsync = createAsyncThunk<Genre[]>(
       return response.data;
     } catch (error) {
       console.error("Failed to fetch genres:", error);
+      return [];
+    }
+  },
+);
+
+export const getSortOptionsAsync = createAsyncThunk<SortOption[]>(
+  MOVIE_ACTIONS.GET_SORT_OPTIONS,
+  async () => {
+    try {
+      const response = await axiosInstance.get(apiRoutes.sortOptions());
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch sort options:", error);
       return [];
     }
   },
