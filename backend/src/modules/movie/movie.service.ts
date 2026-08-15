@@ -27,12 +27,48 @@ export class MovieService {
     private readonly genreRepository: Repository<Genre>,
   ) {}
 
+  private static readonly SORT_OPTIONS = [
+    { value: 'title-asc', label: 'Title (A-Z)' },
+    { value: 'title-desc', label: 'Title (Z-A)' },
+    { value: 'rating-desc', label: 'Rating (high to low)' },
+    { value: 'rating-asc', label: 'Rating (low to high)' },
+    { value: 'year-desc', label: 'Year (newest first)' },
+    { value: 'year-asc', label: 'Year (oldest first)' },
+  ];
+
+  private static readonly ALLOWED_SORT_FIELDS = ['title', 'rating', 'year'];
+
+  getSortOptions() {
+    return MovieService.SORT_OPTIONS;
+  }
+
+  private parseSortParam(
+    sort: string | undefined,
+  ): Record<string, 'ASC' | 'DESC'> | undefined {
+    if (!sort) return undefined;
+
+    const [field, direction] = sort.split('-');
+
+    if (
+      !MovieService.ALLOWED_SORT_FIELDS.includes(field) ||
+      !['asc', 'desc'].includes(direction)
+    ) {
+      throw new BadRequestException(
+        `sort must be one of: ${MovieService.ALLOWED_SORT_FIELDS.join(', ')} with -asc or -desc (e.g. title-asc)`,
+      );
+    }
+
+    return { [field]: direction.toUpperCase() as 'ASC' | 'DESC' };
+  }
+
   async findAll(query: GetMoviesQueryDto) {
-    const { genreIds, search, minRating, maxRating, page, perPage } = query;
+    const { genreIds, search, minRating, maxRating, page, perPage, sort } =
+      query;
     const parsedMinRating = this.parseRating(minRating, 'minRating');
     const parsedMaxRating = this.parseRating(maxRating, 'maxRating');
     const parsedPage = this.parsePositiveInt(page, 'page') ?? 1;
     const parsedPerPage = this.parsePositiveInt(perPage, 'perPage') ?? 12;
+    const order = this.parseSortParam(sort);
 
     if (
       parsedMinRating !== undefined &&
@@ -67,6 +103,7 @@ export class MovieService {
       relations: ['genres'],
       skip: (parsedPage - 1) * parsedPerPage,
       take: parsedPerPage,
+      ...(order && { order }),
     });
 
     return { movies, total, page: parsedPage, perPage: parsedPerPage };

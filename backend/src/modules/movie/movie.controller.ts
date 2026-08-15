@@ -20,6 +20,11 @@ import { GetMoviesQueryDto } from './dto/get-movies-query.dto';
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
 
+  @Get('sort-options')
+  getSortOptions() {
+    return this.movieService.getSortOptions();
+  }
+
   @Get()
   findAll(@Query() query: GetMoviesQueryDto) {
     return this.movieService.findAll(query);
