@@ -5,4 +5,5 @@ export class GetMoviesQueryDto {
   maxRating?: string;
   page?: string;
   perPage?: string;
+  sort?: string;
 }
