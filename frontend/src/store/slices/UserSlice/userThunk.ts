@@ -1,31 +1,39 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import type { LoginReq, RegisterReq } from "./types";
 import axiosInstance from "../../../api/axiosInstance";
 import { apiRoutes } from "../../../api/api";
 import { clearUser, setUser } from "./userSlice";
 import { USER_ACTIONS } from "./userActionTypes";
 
+const getErrorMessage = (error: unknown): string => {
+  if (axios.isAxiosError(error) && error.response?.data?.message) {
+    return error.response.data.message;
+  }
+  return "Something went wrong. Please try again.";
+};
+
 export const registerAsync = createAsyncThunk(
   USER_ACTIONS.REGISTER,
-  async (payload: RegisterReq) => {
+  async (payload: RegisterReq, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(apiRoutes.register(), payload);
       return response.data.user;
     } catch (error) {
-      console.error("Registration failed:", error);
+      return rejectWithValue(getErrorMessage(error));
     }
   },
 );
 
 export const loginAsync = createAsyncThunk(
   USER_ACTIONS.LOGIN,
-  async (payload: LoginReq, { dispatch }) => {
+  async (payload: LoginReq, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(apiRoutes.login(), payload);
       dispatch(setUser(response.data.user));
       return response.data;
     } catch (error) {
-      console.error("Login failed:", error);
+      return rejectWithValue(getErrorMessage(error));
     }
   },
 );

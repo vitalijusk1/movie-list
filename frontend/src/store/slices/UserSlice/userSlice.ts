@@ -12,6 +12,7 @@ interface UserState {
   isAuthFormLoading: boolean;
   isLogoutLoading: boolean;
   isSessionLoading: boolean;
+  authError: string | null;
 }
 
 const initialState: UserState = {
@@ -19,6 +20,7 @@ const initialState: UserState = {
   isAuthFormLoading: false,
   isLogoutLoading: false,
   isSessionLoading: false,
+  authError: null,
 };
 
 const userSlice = createSlice({
@@ -31,25 +33,34 @@ const userSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
+    clearAuthError: (state) => {
+      state.authError = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginAsync.pending, (state) => {
       state.isAuthFormLoading = true;
+      state.authError = null;
     });
     builder.addCase(loginAsync.fulfilled, (state) => {
       state.isAuthFormLoading = false;
+      state.authError = null;
     });
-    builder.addCase(loginAsync.rejected, (state) => {
+    builder.addCase(loginAsync.rejected, (state, action) => {
       state.isAuthFormLoading = false;
+      state.authError = (action.payload as string) ?? "Login failed";
     });
     builder.addCase(registerAsync.pending, (state) => {
       state.isAuthFormLoading = true;
+      state.authError = null;
     });
     builder.addCase(registerAsync.fulfilled, (state) => {
       state.isAuthFormLoading = false;
+      state.authError = null;
     });
-    builder.addCase(registerAsync.rejected, (state) => {
+    builder.addCase(registerAsync.rejected, (state, action) => {
       state.isAuthFormLoading = false;
+      state.authError = (action.payload as string) ?? "Registration failed";
     });
     builder.addCase(logoutAsync.pending, (state) => {
       state.isLogoutLoading = true;
@@ -72,5 +83,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, clearAuthError } = userSlice.actions;
 export default userSlice.reducer;

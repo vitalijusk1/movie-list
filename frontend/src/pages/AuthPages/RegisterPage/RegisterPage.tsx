@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +11,7 @@ import { paths } from "../../../router/paths";
 import { registerSchema, type RegisterFormValues } from "./registerSchema";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { registerAsync } from "../../../store/slices/UserSlice/userThunk";
+import { clearAuthError } from "../../../store/slices/UserSlice/userSlice";
 import utilsStyles from "../../../styles/Utils.module.css";
 import Loader from "../../../components/Loader/Loader";
 
@@ -19,9 +21,11 @@ const RegisterPage = () => {
   const isAuthFormLoading = useAppSelector(
     (state) => state.user.isAuthFormLoading,
   );
+  const authError = useAppSelector((state) => state.user.authError);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -33,13 +37,55 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = async (data: RegisterFormValues) => {
-    try {
-      await dispatch(registerAsync(data)).unwrap();
-      navigate(paths.registerSuccess());
-    } catch (error) {
-      console.error("Registration failed:", error);
+  const watchUsername = watch("username");
+  const watchEmail = watch("email");
+  const watchPassword = watch("password");
+  const watchRepeatPassword = watch("repeatPassword");
+
+  const previousValuesRef = useRef({
+    username: watchUsername,
+    email: watchEmail,
+    password: watchPassword,
+    repeatPassword: watchRepeatPassword,
+  });
+
+  useEffect(() => {
+    const currentValues = {
+      username: watchUsername,
+      email: watchEmail,
+      password: watchPassword,
+      repeatPassword: watchRepeatPassword,
+    };
+
+    const hasChanged = Object.keys(currentValues).some(
+      (key) =>
+        currentValues[key as keyof typeof currentValues] !==
+        previousValuesRef.current[key as keyof typeof currentValues],
+    );
+
+    if (hasChanged && authError) {
+      dispatch(clearAuthError());
     }
+
+    previousValuesRef.current = currentValues;
+  }, [
+    watchUsername,
+    watchEmail,
+    watchPassword,
+    watchRepeatPassword,
+    authError,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    await dispatch(registerAsync(data)).unwrap();
+    navigate(paths.registerSuccess());
   };
 
   return (
@@ -66,6 +112,9 @@ const RegisterPage = () => {
               )}
             </div>
           ))}
+          {authError && (
+            <span className={authFormStyles.error}>{authError}</span>
+          )}
           <Button
             type="submit"
             style={{ height: "var(--control-height-sm)" }}
