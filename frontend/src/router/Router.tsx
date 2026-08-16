@@ -8,6 +8,7 @@ import Layout from "../layouts/AuthLayout";
 import MainLayout from "../layouts/MainLayout";
 import RegisterSuccessPage from "../pages/AuthPages/RegisterSuccessPage/RegisterSuccessPage";
 import MoviePage from "../pages/MoviePage/MoviePage";
+import InvalidPage from "../pages/InvalidPage/InvalidPage";
 import { useAppSelector } from "../store/hooks";
 
 const Router = () => {
@@ -36,7 +37,7 @@ const Router = () => {
         <Route path={paths.movieList()} element={<MovieListPage />} />
         <Route path={paths.movie(":movieId")} element={<MoviePage />} />
       </Route>
-      {/* <Route path="*" element={<Navigate to={paths.login()} />} /> */}
+      <Route path="*" element={<InvalidPage />} />
     </Routes>
   );
 };

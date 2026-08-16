@@ -1,5 +1,4 @@
 import axios from "axios";
-import { paths } from "../router/paths";
 import { store } from "../store";
 import { clearUser } from "../store/slices/UserSlice/userSlice";
 
@@ -18,9 +17,6 @@ axiosInstance.interceptors.response.use(
     if (error.response) {
       if (error.response.status === 401) {
         store.dispatch(clearUser());
-        if (window.location.pathname !== paths.login()) {
-          window.location.href = paths.login();
-        }
       }
       console.error("API Error:", error.response.data);
     } else if (error.request) {
