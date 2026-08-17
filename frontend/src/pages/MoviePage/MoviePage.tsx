@@ -5,6 +5,7 @@ import { apiRoutes } from "../../api/api";
 import type { Movie } from "../../store/slices/MoviesSlice/types";
 import styles from "./MoviePage.module.css";
 import utilsStyles from "../../styles/Utils.module.css";
+import Loader from "../../components/Loader/Loader";
 import MovieBanner from "./components/MovieBanner/MovieBanner";
 import MovieDescription from "./components/MovieDescription/MovieDescription";
 import RelatedMovies from "./components/RelatedMovies/RelatedMovies";
@@ -43,7 +44,7 @@ const MoviePage = () => {
       <div
         className={`${utilsStyles.pageWithHeader} ${utilsStyles.flexCenter}`}
       >
-        <p className={styles.message}>Loading...</p>
+        <Loader size={40} />
       </div>
     );
   }
