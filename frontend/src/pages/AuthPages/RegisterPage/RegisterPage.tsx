@@ -14,6 +14,7 @@ import { registerAsync } from "../../../store/slices/UserSlice/userThunk";
 import { clearAuthError } from "../../../store/slices/UserSlice/userSlice";
 import utilsStyles from "../../../styles/Utils.module.css";
 import Loader from "../../../components/Loader/Loader";
+import AuthFormFields from "../components/AuthFormFields/AuthFormFields";
 
 const RegisterPage = () => {
   const dispatch = useAppDispatch();
@@ -94,24 +95,11 @@ const RegisterPage = () => {
     >
       <AuthForm title="Register" handleSubmit={handleSubmit(onSubmit)}>
         <>
-          {registerFields.map(({ name, label, type }) => (
-            <div key={name} className={authFormStyles.formGroup}>
-              <label htmlFor={name} className={authFormStyles.label}>
-                {label}
-              </label>
-              <input
-                type={type}
-                id={name}
-                className={authFormStyles.input}
-                {...register(name as keyof RegisterFormValues)}
-              />
-              {errors[name as keyof RegisterFormValues] && (
-                <span className={authFormStyles.error}>
-                  {errors[name as keyof RegisterFormValues]?.message}
-                </span>
-              )}
-            </div>
-          ))}
+          <AuthFormFields
+            fields={registerFields}
+            register={register}
+            errors={errors}
+          />
           {authError && (
             <span className={authFormStyles.error}>{authError}</span>
           )}

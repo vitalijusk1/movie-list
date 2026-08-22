@@ -14,6 +14,7 @@ import { loginAsync } from "../../../store/slices/UserSlice/userThunk";
 import { clearAuthError } from "../../../store/slices/UserSlice/userSlice";
 import utilsStyles from "../../../styles/Utils.module.css";
 import Loader from "../../../components/Loader/Loader";
+import AuthFormFields from "../components/AuthFormFields/AuthFormFields";
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -67,24 +68,11 @@ const LoginPage = () => {
     >
       <AuthForm title="Login" handleSubmit={handleSubmit(onSubmit)}>
         <>
-          {loginFields.map(({ name, label, type }) => (
-            <div key={name} className={authFormStyles.formGroup}>
-              <label htmlFor={name} className={authFormStyles.label}>
-                {label}
-              </label>
-              <input
-                type={type}
-                id={name}
-                className={authFormStyles.input}
-                {...register(name as keyof LoginFormValues)}
-              />
-              {errors[name as keyof LoginFormValues] && (
-                <span className={authFormStyles.error}>
-                  {errors[name as keyof LoginFormValues]?.message}
-                </span>
-              )}
-            </div>
-          ))}
+          <AuthFormFields
+            fields={loginFields}
+            register={register}
+            errors={errors}
+          />
           {authError && (
             <span className={authFormStyles.error}>{authError}</span>
           )}
