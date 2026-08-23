@@ -1,19 +1,15 @@
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
-import authFormStyles from "../components/AuthForm/AuthForm.module.css";
+import { useNavigate } from "react-router-dom";
 import AuthForm from "../components/AuthForm/AuthForm";
-import authStyles from "../styles/Auth.module.css";
 import { loginFields } from "./loginFormData";
-import Button from "../../../components/Button/Button";
 import { paths } from "../../../router/paths";
 import { loginSchema, type LoginFormValues } from "./loginSchema";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { loginAsync } from "../../../store/slices/UserSlice/userThunk";
 import { clearAuthError } from "../../../store/slices/UserSlice/userSlice";
 import utilsStyles from "../../../styles/Utils.module.css";
-import Loader from "../../../components/Loader/Loader";
 import AuthFormFields from "../components/AuthFormFields/AuthFormFields";
 
 const LoginPage = () => {
@@ -49,13 +45,13 @@ const LoginPage = () => {
 
     previousEmailRef.current = watchEmail;
     previousPasswordRef.current = watchPassword;
-  }, [watchEmail, watchPassword, authError, dispatch]);
+  }, [watchEmail, watchPassword, authError]);
 
   useEffect(() => {
     return () => {
       dispatch(clearAuthError());
     };
-  }, [dispatch]);
+  }, []);
 
   const onSubmit = async (data: LoginFormValues) => {
     await dispatch(loginAsync(data)).unwrap();
@@ -72,20 +68,13 @@ const LoginPage = () => {
             fields={loginFields}
             register={register}
             errors={errors}
+            authError={authError}
+            submitBtnTxt="Login"
+            isAuthFormLoading={isAuthFormLoading}
+            linkText="Don't have an account?"
+            linkLabel="Register"
+            linkTo={paths.register()}
           />
-          {authError && (
-            <span className={authFormStyles.error}>{authError}</span>
-          )}
-          <Button
-            type="submit"
-            style={{ height: "var(--control-height-sm)" }}
-            disabled={isAuthFormLoading}
-          >
-            {isAuthFormLoading ? <Loader /> : "Login"}
-          </Button>
-          <p className={authStyles.authLink}>
-            Don't have an account? <Link to={paths.register()}>Register</Link>
-          </p>
         </>
       </AuthForm>
     </section>
