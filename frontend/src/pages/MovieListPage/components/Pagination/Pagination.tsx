@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import styles from "./Pagination.module.css";
 import Button from "../../../../components/Button/Button";
+import Selector from "../../../../components/Selector/Selector";
 import { useAppSelector } from "../../../../store/hooks";
 
 const perPageOptions = [8, 12, 24, 48];
@@ -56,19 +57,16 @@ const Pagination = ({ page, perPage, total }: PaginationProps) => {
         <div
           className={`${styles.Controls} ${isLoading ? styles.loading : ""}`}
         >
-          <select
-            aria-label="Items per page"
-            className={styles.Select}
-            value={perPage}
-            onChange={(event) => updatePerPage(Number(event.target.value))}
+          <Selector
+            ariaLabel="Items per page"
+            value={String(perPage)}
+            onChange={(value) => updatePerPage(Number(value))}
             disabled={isLoading}
-          >
-            {perPageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option} per page
-              </option>
-            ))}
-          </select>
+            options={perPageOptions.map((option) => ({
+              value: String(option),
+              label: `${option} per page`,
+            }))}
+          />
 
           <div className={styles.ButtonGroup}>
             <Button

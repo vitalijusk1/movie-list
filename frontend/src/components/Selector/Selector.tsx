@@ -12,6 +12,7 @@ interface SelectorProps {
   onChange: (value: string) => void;
   options: SelectorOption[];
   ariaLabel?: string;
+  disabled?: boolean;
 }
 
 const Selector: FC<SelectorProps> = ({
@@ -19,6 +20,7 @@ const Selector: FC<SelectorProps> = ({
   onChange,
   options,
   ariaLabel,
+  disabled,
 }) => {
   return (
     <div className={styles.SelectWrapper}>
@@ -27,6 +29,7 @@ const Selector: FC<SelectorProps> = ({
         className={styles.Select}
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        disabled={disabled}
       >
         {options.map((option) => (
           <option
