@@ -15,6 +15,11 @@
   cursor: pointer;
 }
 
+.Select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .Chevron {
   position: absolute;
   top: 50%;
