@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance";
-import { apiRoutes } from "../../api/api";
-import type { Movie } from "../../store/slices/MoviesSlice/types";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { getMovieAsync } from "../../store/slices/MoviesSlice/moviesThunk";
+import { clearCurrentMovie } from "../../store/slices/MoviesSlice/moviesSlice";
 import styles from "./MoviePage.module.css";
 import utilsStyles from "../../styles/Utils.module.css";
 import Loader from "../../components/Loader/Loader";
@@ -12,22 +12,20 @@ import RelatedMovies from "./components/RelatedMovies/RelatedMovies";
 
 const MoviePage = () => {
   const { movieId } = useParams<{ movieId: string }>();
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const dispatch = useAppDispatch();
+  const movie = useAppSelector((state) => state.movies.currentMovie);
+  const isLoading = useAppSelector((state) => state.movies.isMovieLoading);
+  const error = useAppSelector((state) => state.movies.movieError);
 
   useEffect(() => {
-    const fetchMovie = async (id: string) => {
-      try {
-        const response = await axiosInstance.get<Movie>(apiRoutes.movie(id));
-        setMovie(response.data);
-      } catch {
-        console.log("error");
-      }
-    };
-
     if (movieId) {
-      fetchMovie(movieId);
+      dispatch(getMovieAsync(movieId));
     }
-  }, [movieId]);
+
+    return () => {
+      dispatch(clearCurrentMovie());
+    };
+  }, [movieId, dispatch]);
 
   if (!movieId) {
     return (
@@ -39,12 +37,22 @@ const MoviePage = () => {
     );
   }
 
-  if (!movie) {
+  if (isLoading) {
     return (
       <div
         className={`${utilsStyles.pageWithHeader} ${utilsStyles.flexCenter}`}
       >
         <Loader size={40} />
+      </div>
+    );
+  }
+
+  if (error || !movie) {
+    return (
+      <div
+        className={`${utilsStyles.pageWithHeader} ${utilsStyles.flexCenter}`}
+      >
+        <p className={styles.message}>{error ?? "No movie found"}</p>
       </div>
     );
   }

@@ -3,7 +3,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { apiRoutes } from "../../../api/api";
 import { MOVIE_ACTIONS } from "./movieActionTypes";
 import axiosInstance from "../../../api/axiosInstance";
-import type { Genre, PaginatedMoviesResponse, SortOption } from "./types";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import type {
+  Genre,
+  Movie,
+  PaginatedMoviesResponse,
+  SortOption,
+} from "./types";
 
 interface GetMoviesParams {
   genreIds?: number[];
@@ -65,6 +71,18 @@ export const getSortOptionsAsync = createAsyncThunk<SortOption[]>(
     } catch (error) {
       console.error("Failed to fetch sort options:", error);
       return [];
+    }
+  },
+);
+
+export const getMovieAsync = createAsyncThunk<Movie, string>(
+  MOVIE_ACTIONS.GET_BY_ID,
+  async (movieId, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get<Movie>(apiRoutes.movie(movieId));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
     }
   },
 );

@@ -1,17 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import type { LoginReq, RegisterReq } from "./types";
 import axiosInstance from "../../../api/axiosInstance";
 import { apiRoutes } from "../../../api/api";
 import { clearUser, setUser } from "./userSlice";
 import { USER_ACTIONS } from "./userActionTypes";
-
-const getErrorMessage = (error: unknown): string => {
-  if (axios.isAxiosError(error) && error.response?.data?.message) {
-    return error.response.data.message;
-  }
-  return "Something went wrong. Please try again.";
-};
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 export const registerAsync = createAsyncThunk(
   USER_ACTIONS.REGISTER,
