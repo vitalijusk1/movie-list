@@ -1,10 +1,46 @@
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
+
 export class CreateMovieDto {
-  title: string;
-  description: string;
-  rating: number;
-  lengthMinutes: number;
+  @IsString()
+  @IsNotEmpty()
+  title!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  description!: string;
+
+  @IsNumber()
+  @Min(0)
+  @Max(10)
+  rating!: number;
+
+  @IsNumber()
+  @IsPositive()
+  lengthMinutes!: number;
+
+  @IsOptional()
+  @IsString()
   posterUrl?: string;
+
+  @IsOptional()
+  @IsNumber()
   year?: number;
-  genreIds: number[];
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  genreIds!: number[];
+
+  @IsOptional()
+  @IsArray()
+  @IsNumber({}, { each: true })
   relatedMovieIds?: number[];
 }
