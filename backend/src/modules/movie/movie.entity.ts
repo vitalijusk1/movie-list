@@ -12,40 +12,40 @@ import { Genre } from '../genre/genre.entity';
 @Entity()
 export class Movie {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  title: string;
+  title!: string;
 
   @Column('text')
-  description: string;
+  description!: string;
 
   @Column('decimal', { precision: 3, scale: 1 })
-  rating: number;
+  rating!: number;
 
   @Column()
-  lengthMinutes: number;
+  lengthMinutes!: number;
 
   @Column({ nullable: true })
-  posterUrl: string;
+  posterUrl?: string;
 
   @Column({ nullable: true })
-  year: number;
+  year?: number;
 
   @ManyToMany(() => Genre, (genre) => genre.movies, { eager: true })
   @JoinTable({ name: 'movie_genres' })
-  genres: Genre[];
+  genres!: Genre[];
 
   @ManyToMany(() => Movie, (movie) => movie.relatedTo)
   @JoinTable({ name: 'movie_related' })
-  relatedMovies: Movie[];
+  relatedMovies!: Movie[];
 
   @ManyToMany(() => Movie, (movie) => movie.relatedMovies)
-  relatedTo: Movie[];
+  relatedTo!: Movie[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }
