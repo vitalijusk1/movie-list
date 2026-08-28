@@ -67,20 +67,6 @@ export class AuthService {
     };
   }
 
-  // async verifyToken(token: string) {
-  //   try {
-  //     const payload = this.jwtService.verify(token);
-  //     const user = await this.userService.findById(payload.sub);
-  //     if (!user) {
-  //       throw new UnauthorizedException('User not found');
-  //     }
-  //     const { password, ...result } = user;
-  //     return result;
-  //   } catch {
-  //     throw new UnauthorizedException('Invalid token');
-  //   }
-  // }
-
   async getCurrentUser(userId: number) {
     const user = await this.userService.findById(userId);
     if (!user) {
