@@ -18,6 +18,11 @@ import { Genre } from '../genre/genre.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { GetMoviesQueryDto } from './dto/get-movies-query.dto';
 
+const SORT_DIRECTIONS: Record<string, 'ASC' | 'DESC'> = {
+  asc: 'ASC',
+  desc: 'DESC',
+};
+
 @Injectable()
 export class MovieService {
   constructor(
@@ -36,44 +41,29 @@ export class MovieService {
     { value: 'year-asc', label: 'Year (oldest first)' },
   ];
 
-  private static readonly ALLOWED_SORT_FIELDS = ['title', 'rating', 'year'];
-
   getSortOptions() {
     return MovieService.SORT_OPTIONS;
   }
 
-  private parseSortParam(
+  private buildSortOrder(
     sort: string | undefined,
   ): Record<string, 'ASC' | 'DESC'> | undefined {
     if (!sort) return undefined;
-
     const [field, direction] = sort.split('-');
-
-    if (
-      !MovieService.ALLOWED_SORT_FIELDS.includes(field) ||
-      !['asc', 'desc'].includes(direction)
-    ) {
-      throw new BadRequestException(
-        `sort must be one of: ${MovieService.ALLOWED_SORT_FIELDS.join(', ')} with -asc or -desc (e.g. title-asc)`,
-      );
-    }
-
-    return { [field]: direction.toUpperCase() as 'ASC' | 'DESC' };
+    return { [field]: SORT_DIRECTIONS[direction] };
   }
 
   async findAll(query: GetMoviesQueryDto) {
     const { genreIds, search, minRating, maxRating, page, perPage, sort } =
       query;
-    const parsedMinRating = this.parseRating(minRating, 'minRating');
-    const parsedMaxRating = this.parseRating(maxRating, 'maxRating');
-    const parsedPage = this.parsePositiveInt(page, 'page') ?? 1;
-    const parsedPerPage = this.parsePositiveInt(perPage, 'perPage') ?? 12;
-    const order = this.parseSortParam(sort);
+    const currentPage = page ?? 1;
+    const pageSize = perPage ?? 12;
+    const order = this.buildSortOrder(sort);
 
     if (
-      parsedMinRating !== undefined &&
-      parsedMaxRating !== undefined &&
-      parsedMinRating > parsedMaxRating
+      minRating !== undefined &&
+      maxRating !== undefined &&
+      minRating > maxRating
     ) {
       throw new BadRequestException(
         'minRating must be less than or equal to maxRating',
@@ -82,70 +72,29 @@ export class MovieService {
 
     let rating: FindOperator<number> | undefined;
 
-    if (parsedMinRating !== undefined && parsedMaxRating !== undefined) {
-      rating = Between(parsedMinRating, parsedMaxRating);
-    } else if (parsedMinRating !== undefined) {
-      rating = MoreThanOrEqual(parsedMinRating);
-    } else if (parsedMaxRating !== undefined) {
-      rating = LessThanOrEqual(parsedMaxRating);
+    if (minRating !== undefined && maxRating !== undefined) {
+      rating = Between(minRating, maxRating);
+    } else if (minRating !== undefined) {
+      rating = MoreThanOrEqual(minRating);
+    } else if (maxRating !== undefined) {
+      rating = LessThanOrEqual(maxRating);
     }
 
     const where = {
-      ...(genreIds && { genres: { id: In(genreIds.split(',').map(Number)) } }),
+      ...(genreIds?.length && { genres: { id: In(genreIds) } }),
       ...(search && { title: ILike(`%${search}%`) }),
       ...(rating && { rating }),
-      // example of other query params being used
-      // ...(year && { year: Number(year) }),
     };
 
     const [movies, total] = await this.movieRepository.findAndCount({
       where,
       relations: ['genres'],
-      skip: (parsedPage - 1) * parsedPerPage,
-      take: parsedPerPage,
+      skip: (currentPage - 1) * pageSize,
+      take: pageSize,
       ...(order && { order }),
     });
 
-    return { movies, total, page: parsedPage, perPage: parsedPerPage };
-  }
-
-  private parseRating(
-    value: string | undefined,
-    name: string,
-  ): number | undefined {
-    if (value === undefined) {
-      return undefined;
-    }
-
-    const rating = Number(value);
-
-    if (value.trim() === '' || !Number.isFinite(rating)) {
-      throw new BadRequestException(`${name} must be a valid number`);
-    }
-
-    return rating;
-  }
-
-  private parsePositiveInt(
-    value: string | undefined,
-    name: string,
-  ): number | undefined {
-    if (value === undefined) {
-      return undefined;
-    }
-
-    const int = Number(value);
-
-    if (
-      value.trim() === '' ||
-      !Number.isFinite(int) ||
-      !Number.isInteger(int) ||
-      int < 1
-    ) {
-      throw new BadRequestException(`${name} must be a positive integer`);
-    }
-
-    return int;
+    return { movies, total, page: currentPage, perPage: pageSize };
   }
 
   async findOne(id: number): Promise<Movie> {
