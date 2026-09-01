@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import type { Response } from 'express';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -77,7 +78,7 @@ export class AuthService {
     return result;
   }
 
-  clearAuthCookie(res: any) {
+  clearAuthCookie(res: Response): void {
     res.clearCookie('access_token');
   }
 }

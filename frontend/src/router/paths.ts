@@ -4,5 +4,4 @@ export const paths = {
   register: () => "/register" as const,
   login: () => "/login" as const,
   registerSuccess: () => "/register-success" as const,
-  //   vehicle: (vehicleId: string) => `/vehicle/${vehicleId}`,
 };
