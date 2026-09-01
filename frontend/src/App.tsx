@@ -2,7 +2,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { BrowserRouter } from "react-router-dom";
 import { store, persistor } from "./store";
-import SessionBootstrap from "./components/SessionBootstrap/SessionBootsrap";
+import SessionBootstrap from "./components/SessionBootstrap/SessionBootstrap";
 
 export default function App() {
   return (
